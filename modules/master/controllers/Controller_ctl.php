@@ -40,120 +40,72 @@ class Controller_ctl extends MY_Admin
     }
 
 
-
-    public function petugas()
+    // ==========================================
+    // 1. SURAT MASUK
+    // ==========================================
+    public function surat_masuk()
     {
-        if (!in_array($this->role,['admin'])) {
+        if (!in_array($this->role, ['admin', 'petugas'])) {
             redirect('dashboard');
         }
+        
         $mydata = [];
         // LOAD MAIN DATA
-        $this->data['title'] = 'Data Petugas';
-        $this->data['subtitle'] = 'Manajemen data petugas';
+        $this->data['title'] = 'Surat Masuk';
+        $this->data['subtitle'] = 'Manajemen data surat masuk';
+        
         // LOAD JS
-        $this->data['js_add'][] = '<script>var page = "master/petugas"</script>';
-        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/petugas.js"></script>';
+        $this->data['js_add'][] = '<script>var page = "master/surat_masuk"</script>';
+        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/surat_masuk.js"></script>';
 
         // LOAD VIEW
-        $this->data['content'] = $this->load->view('petugas', $mydata, TRUE);
+        $this->data['content'] = $this->load->view('surat_masuk', $mydata, TRUE);
         $this->display();
     }
 
-     public function box()
+    // ==========================================
+    // 2. SURAT KELUAR
+    // ==========================================
+    public function surat_keluar()
     {
-        $mydata = [];
-        // LOAD MAIN DATA
-        $this->data['title'] = 'Data Box Arsip';
-        $this->data['subtitle'] = 'Manajemen data box arsip';
-        // LOAD JS
-        $this->data['js_add'][] = '<script>var page = "master/box"</script>';
-        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/box.js"></script>';
-
-        // LOAD VIEW
-        $this->data['content'] = $this->load->view('box', $mydata, TRUE);
-        $this->display();
-    }
-
-    public function category()
-    {
-        $mydata = [];
-        // LOAD MAIN DATA
-        $this->data['title'] = 'Data Kategori';
-        $this->data['subtitle'] = 'Manajemen data kategori';
-        // LOAD JS
-        $this->data['js_add'][] = '<script>var page = "master/category"</script>';
-        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/category.js"></script>';
-
-        // LOAD VIEW
-        $this->data['content'] = $this->load->view('category', $mydata, TRUE);
-        $this->display();
-    }
-
-
-    public function location()
-    {
-        $mydata = [];
-        // LOAD MAIN DATA
-        $this->data['title'] = 'Data Lokasi';
-        $this->data['subtitle'] = 'Manajemen data lokasi';
-        // LOAD JS
-        $this->data['js_add'][] = '<script>var page = "master/location"</script>';
-        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/location.js"></script>';
-
-        // LOAD VIEW
-        $this->data['content'] = $this->load->view('location', $mydata, TRUE);
-        $this->display();
-    }
-
-
-    public function arsip()
-    {
-        $mydata = [];
-        // LOAD MAIN DATA
-        $this->data['title'] = 'Data Arsip';
-        $this->data['subtitle'] = 'Manajemen data arsip';
-        // LOAD JS
-        $this->data['js_add'][] = '<script>var page = "master/petugas"</script>';
-        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/arsip.js"></script>';
-
-        // GET DATA
-        $category = $this->action_m->get_all('category');
-        $location = $this->action_m->get_all('location');
-        $box_arsip = $this->action_m->get_all('box_arsip');
-
-        // SET DATA
-        $mydata['category'] = $category;
-        $mydata['location'] = $location;
-        $mydata['box_arsip'] = $box_arsip;
-
-        // LOAD VIEW
-        $this->data['content'] = $this->load->view('arsip', $mydata, TRUE);
-        $this->display();
-    }
-
-
-    public function detail_arsip()
-    {
-        $id = $this->input->post('id');
-        if (!$id) {
-            echo "ID Tidak terdeteksi";
-            exit;
+        if (!in_array($this->role, ['admin', 'petugas'])) {
+            redirect('dashboard');
         }
-        $params['arrjoin']['category']['statement'] = 'category.id = arsip.id_category';
-        $params['arrjoin']['category']['type'] = 'LEFT';
-        $params['arrjoin']['location']['statement'] = 'location.id = arsip.id_location';
-        $params['arrjoin']['location']['type'] = 'LEFT';
-        $params['arrjoin']['box_arsip']['statement'] = 'box_arsip.id = arsip.id_box_arsip';
-        $params['arrjoin']['box_arsip']['type'] = 'LEFT';
+        
+        $mydata = [];
+        // LOAD MAIN DATA
+        $this->data['title'] = 'Surat Keluar';
+        $this->data['subtitle'] = 'Manajemen data surat keluar';
+        
+        // LOAD JS
+        $this->data['js_add'][] = '<script>var page = "master/surat_keluar"</script>';
+        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/surat_keluar.js"></script>';
 
-        $result = $this->action_m->get_where_params('arsip', ['arsip.id' => $id], 'arsip.*,category.name AS category,location.name AS location,location.code AS location_code,box_arsip.name AS box_arsip', $params);
-        if (!$result) {
-            echo "Data Arsip Tidak Terdeteksi";
-            exit;
+        // LOAD VIEW
+        $this->data['content'] = $this->load->view('surat_keluar', $mydata, TRUE);
+        $this->display();
+    }
+
+    // ==========================================
+    // 3. LHP (Laporan Hasil Pemeriksaan)
+    // ==========================================
+    public function lhp()
+    {
+        if (!in_array($this->role, ['admin', 'petugas'])) {
+            redirect('dashboard');
         }
+        
+        $mydata = [];
+        // LOAD MAIN DATA
+        $this->data['title'] = 'Data LHP';
+        $this->data['subtitle'] = 'Manajemen data Laporan Hasil Pemeriksaan';
+        
+        // LOAD JS
+        $this->data['js_add'][] = '<script>var page = "master/lhp"</script>';
+        $this->data['js_add'][] = '<script src="' . base_url() . 'assets/admin/js/modul/master/lhp.js"></script>';
 
-        $data['result'] = $result[0];
-        sleep(1);
-        $this->load->view('modal/display_arsip',$data);
+        // LOAD VIEW
+        $this->data['content'] = $this->load->view('lhp', $mydata, TRUE);
+        $this->display();
     }
 }

@@ -235,3 +235,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_qr_code" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-350px">
+        <div class="modal-content">
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-10 pt-0 pb-15 text-center">
+                <div class="mb-13 text-center">
+                    <h1 class="mb-3">QR Code User</h1>
+                    <div class="text-muted fw-semibold fs-5" id="qr_name_display">Nama User</div>
+                </div>
+                
+                <div id="qr_canvas" class="d-flex justify-content-center mb-10">
+                    </div>
+
+                <div class="text-center">
+                    <code class="fs-8 text-muted break-all" id="qr_url_display"></code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

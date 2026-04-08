@@ -23,32 +23,25 @@ class Controller_ctl extends MY_Admin
         $data['subtitle'] = 'Landing Page '.($this->role == 'admin') ? 'Admin' : 'Petugas'; 
 
         // DEFAULT DATA
-        $cnt_petugas = 0;
         $cnt_admin = 0;
-        $cnt_arsip = 0;
+        $cnt_surat_masuk = 0;
+        $cnt_surat_keluar = 0;
 
         // GET DATA
         $user = $this->action_m->get_all('users',['status' => 'Y']);
-        $arsip = $this->action_m->get_all('arsip');
         if ($user) {
             foreach ($user as $key) {
                 if ($key->role == 'admin') {
                     $cnt_admin += 1;
-                }else{
-                    $cnt_petugas += 1;
                 }
             }
         }
 
-        if ($arsip) {
-            $cnt_arsip += count($arsip);
-        }
-
         // SET DATA
         
-        $data['cnt_petugas'] = $cnt_petugas;
-        $data['cnt_admin'] = $cnt_admin;
-        $data['cnt_arsip'] = $cnt_arsip;
+        $data['cnt_petugas'] = $cnt_admin;
+        $data['cnt_surat_masuk'] = $cnt_surat_masuk;
+        $data['cnt_surat_keluar'] = $cnt_surat_keluar;
 
         // LOAD VIEW
         $this->data['content'] = $this->load->view('index', $data, TRUE);

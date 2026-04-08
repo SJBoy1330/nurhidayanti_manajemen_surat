@@ -187,6 +187,8 @@ class MY_Admin extends MY_Controller
             }else{
                 redirect('logout');
             }
+        }else{
+            redirect('logout');
         }
         
         $this->data['setting'] = $setting;

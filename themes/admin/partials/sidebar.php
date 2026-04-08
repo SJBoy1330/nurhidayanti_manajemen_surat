@@ -57,9 +57,9 @@ $segment2 = $this->uri->segment(2);
                 </a>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <a href="<?= base_url('master/letter/in'); ?>" class="menu-item mb-3">
+                <a href="<?= base_url('master/surat_masuk'); ?>" class="menu-item mb-3">
                     <!--begin:Menu link-->
-                    <span class="menu-link <?= ($segment1 == 'master' && $segment2 == 'box') ? 'active' : ''; ?>">
+                    <span class="menu-link <?= ($segment1 == 'master' && $segment2 == 'surat_masuk') ? 'active' : ''; ?>">
                         <span class="menu-icon">
                             <i class="fa-solid fa-box-open fs-2"></i>
                         </span>
@@ -69,9 +69,9 @@ $segment2 = $this->uri->segment(2);
                 </a>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <a href="<?= base_url('master/letter/out'); ?>" class="menu-item mb-3">
+                <a href="<?= base_url('master/surat_keluar'); ?>" class="menu-item mb-3">
                     <!--begin:Menu link-->
-                    <span class="menu-link <?= ($segment1 == 'master' && $segment2 == 'location') ? 'active' : ''; ?>">
+                    <span class="menu-link <?= ($segment1 == 'master' && $segment2 == 'surat_keluar') ? 'active' : ''; ?>">
                         <span class="menu-icon">
                             <i class="fa-solid fa-map fs-2"></i>
                         </span>
@@ -82,13 +82,13 @@ $segment2 = $this->uri->segment(2);
                 <!--end:Menu item-->
                
                  <!--begin:Menu item-->
-                <a href="<?= base_url('report'); ?>" class="menu-item mb-3">
+                <a href="<?= base_url('master/lhp'); ?>" class="menu-item mb-3">
                     <!--begin:Menu link-->
-                    <span class="menu-link <?= ($segment1 == 'master' && $segment2 == 'arsip') ? 'active' : ''; ?>">
+                    <span class="menu-link <?= ($segment1 == 'master' && $segment2 == 'lhp') ? 'active' : ''; ?>">
                         <span class="menu-icon">
                             <i class="fa-solid fa-file fs-2"></i>
                         </span>
-                        <span class="menu-title fs-4">Laporan Hasil Pemeriksaan</span>
+                        <span class="menu-title fs-4">LHP</span>
                     </span>
                     <!--end:Menu link-->
                 </a>

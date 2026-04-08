@@ -158,7 +158,7 @@ $db['default'] = array(
 
 	'password' => '',
 
-	'database' => 'baihaki_arsip',
+	'database' => 'suratinout',
 
 	'dbdriver' => 'mysqli',
 

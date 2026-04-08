@@ -251,14 +251,18 @@ class Function_ctl extends MY_Admin
         exit;
     }
 
-    // FUNCTION BOX
-    public function insert_box_arsip()
+
+    // FUCNTION SURAT MASUK
+    public function insert_surat_masuk()
     {
         // VARIABEL
-        $arrVar['code']             = 'Kode';
-        $arrVar['name']             = 'Nama box';
+        $arrVar['no_surat']     = 'Nomor Surat';
+        $arrVar['tgl_diterima'] = 'Tanggal Diterima';
+        $arrVar['asal_surat']   = 'Asal Surat';
+        $arrVar['perihal']      = 'Perihal';
         
-        // INFORMASI UMUM
+        // Keterangan tidak masuk arrVar karena opsional (boleh kosong)
+
         foreach ($arrVar as $var => $value) {
             $$var = $_POST[$var] ?? '';
             if (!$$var) {
@@ -270,374 +274,51 @@ class Function_ctl extends MY_Admin
             }
         }
 
-        if (!in_array(false, $arrAccess)) {
-            if ($this->id) {
-                $post['create_by'] = $this->id;
-            }
-            $cek = $this->action_m->get_single('box_arsip',['code' => $code]);
-            if ($cek) {
-                $data['status'] = false;
-                $data['alert']['message'] = 'Kode sudah terdaftar! Silahkan gunakan kode lain';
-                echo json_encode($data);
-                exit;
-            }
-
-            $insert = $this->action_m->insert('box_arsip', $post);
-            if ($insert) {
-                $log['type'] = 'add';
-                $log['description'] = 'Menambahkan data <b>"Box Arsip"</b> baru';
-                $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
-
-
-                $data['status'] = true;
-                $data['alert']['message'] = 'Data box berhasil di tambahkan!';
-                $data['datatable'] = 'table_box_arsip';
-                $data['modal']['id'] = '#kt_modal_box_arsip';
-                $data['modal']['action'] = 'hide';
-                $data['input']['all'] = true;
-            } else {
-                $data['status'] = false;
-            }
-        } else {
-            $data['status'] = false;
-        }
-        sleep(1.5);
-        echo json_encode($data);
-        exit;
-    }
-
-    public function update_box_arsip()
-    {
-        // VARIABEL
-        $arrVar['id']          = 'Id box';
-        $arrVar['code']             = 'Kode';
-        $arrVar['name']             = 'Nama box';
-
-        // INFORMASI UMUM
-        foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var];
-            if (!$$var) {
-                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
-                $arrAccess[] = false;
-            } else {
-                $post[$var] = trim($$var);
-                $arrAccess[] = true;
-            }
-        }
-        $result = $this->action_m->get_single('box_arsip', ['id' => $id]);
-        
-        if (!in_array(false, $arrAccess)) {
-            $cek = $this->action_m->get_single('box_arsip',['code' => $code,'id !=' => $id]);
-            if ($cek) {
-                $data['status'] = false;
-                $data['alert']['message'] = 'Kode sudah terdaftar! Silahkan gunakan kode lain';
-                echo json_encode($data);
-                exit;
-            }
-            $update = $this->action_m->update('box_arsip', $post, ['id' => $id]);
-            if ($update) {
-                $log['type'] = 'edt';
-                $log['description'] = 'Merubah data <b>"Box Arsip"</b> dengan code <b>"'.$result->code.'"</b>';
-                $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
-
-                $data['status'] = true;
-                $data['alert']['message'] = 'Data box berhasil di rubah!';
-                $data['datatable'] = 'table_box_arsip';
-                $data['modal']['id'] = '#kt_modal_box_arsip';
-                $data['modal']['action'] = 'hide';
-                $data['input']['all'] = true;
-            } else {
-                $data['status'] = false;
-            }
-        } else {
-            $data['status'] = false;
-        }
-        sleep(1.5);
-        echo json_encode($data);
-        exit;
-    }
-
-    // FUNCTION KATEGORI
-    public function insert_category()
-    {
-        // VARIABEL
-        $arrVar['name']             = 'Nama kategori';
-        
-        // INFORMASI UMUM
-        foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var] ?? '';
-            if (!$$var) {
-                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
-                $arrAccess[] = false;
-            } else {
-                $post[$var] = trim($$var);
-                $arrAccess[] = true;
-            }
-        }
-
-        $post['code'] = 'CT'.date('YmdHis');
-        if (!in_array(false, $arrAccess)) {
-            if ($this->id) {
-                $post['create_by'] = $this->id;
-            }
-
-            $insert = $this->action_m->insert('category', $post);
-            if ($insert) {
-                $log['type'] = 'add';
-                $log['description'] = 'Menambahkan data <b>"Kategori"</b> baru';
-                $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
-
-                $data['status'] = true;
-                $data['alert']['message'] = 'Data kategori berhasil di tambahkan!';
-                $data['datatable'] = 'table_category';
-                $data['modal']['id'] = '#kt_modal_category';
-                $data['modal']['action'] = 'hide';
-                $data['input']['all'] = true;
-            } else {
-                $data['status'] = false;
-            }
-        } else {
-            $data['status'] = false;
-        }
-        sleep(1.5);
-        echo json_encode($data);
-        exit;
-    }
-
-    public function update_category()
-    {
-        // VARIABEL
-        $arrVar['id']          = 'Id kategori';
-        $arrVar['name']             = 'Nama kategori';
-
-        // INFORMASI UMUM
-        foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var];
-            if (!$$var) {
-                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
-                $arrAccess[] = false;
-            } else {
-                $post[$var] = trim($$var);
-                $arrAccess[] = true;
-            }
-        }
-        $result = $this->action_m->get_single('category', ['id' => $id]);
-        
-        if (!in_array(false, $arrAccess)) {
-            $update = $this->action_m->update('category', $post, ['id' => $id]);
-            if ($update) {
-                $log['type'] = 'edt';
-                $log['description'] = 'Merubah data <b>"Kategori"</b> dengan code <b>"'.$result->code.'"</b>';
-                $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
-
-                $data['status'] = true;
-                $data['alert']['message'] = 'Data kategori berhasil di rubah!';
-                $data['datatable'] = 'table_category';
-                $data['modal']['id'] = '#kt_modal_category';
-                $data['modal']['action'] = 'hide';
-                $data['input']['all'] = true;
-            } else {
-                $data['status'] = false;
-            }
-        } else {
-            $data['status'] = false;
-        }
-        sleep(1.5);
-        echo json_encode($data);
-        exit;
-    }
-
-
-
-    // FUNCTION LOKASI
-    public function insert_location()
-    {
-        // VARIABEL
-        $arrVar['code']             = 'Kode';
-        $arrVar['name']             = 'Nama lokasi';
-        $arrVar['address']             = 'Alamat';
-        
-        // INFORMASI UMUM
-        foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var] ?? '';
-            if (!$$var) {
-                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
-                $arrAccess[] = false;
-            } else {
-                $post[$var] = trim($$var);
-                $arrAccess[] = true;
-            }
-        }
+        // Tambahkan keterangan (opsional)
+        $post['keterangan'] = $_POST['keterangan'] ?? '';
 
         if (!in_array(false, $arrAccess)) {
-            if ($this->id) {
-                $post['create_by'] = $this->id;
-            }
-            $cek = $this->action_m->get_single('location',['code' => $code]);
-            if ($cek) {
-                $data['status'] = false;
-                $data['alert']['message'] = 'Kode sudah terdaftar! Silahkan gunakan kode lain';
-                echo json_encode($data);
-                exit;
-            }
+            $tujuan = './data/surat_masuk/';
 
-            $insert = $this->action_m->insert('location', $post);
-            if ($insert) {
-                $log['type'] = 'add';
-                $log['description'] = 'Menambah data <b>"Lokasi"</b> baru';
-                $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
-
-                $data['status'] = true;
-                $data['alert']['message'] = 'Data lokasi berhasil di tambahkan!';
-                $data['datatable'] = 'table_location';
-                $data['modal']['id'] = '#kt_modal_location';
-                $data['modal']['action'] = 'hide';
-                $data['input']['all'] = true;
-            } else {
-                $data['status'] = false;
-            }
-        } else {
-            $data['status'] = false;
-        }
-        sleep(1.5);
-        echo json_encode($data);
-        exit;
-    }
-
-    public function update_location()
-    {
-        // VARIABEL
-        $arrVar['id']          = 'Id lokasi';
-        $arrVar['code']             = 'Kode';
-        $arrVar['name']             = 'Nama lokasi';
-        $arrVar['address']             = 'Alamat';
-
-        // INFORMASI UMUM
-        foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var];
-            if (!$$var) {
-                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
-                $arrAccess[] = false;
-            } else {
-                $post[$var] = trim($$var);
-                $arrAccess[] = true;
-            }
-        }
-        $result = $this->action_m->get_single('location', ['id' => $id]);
-        
-        if (!in_array(false, $arrAccess)) {
-            $cek = $this->action_m->get_single('location',['code' => $code,'id !=' => $id]);
-            if ($cek) {
-                $data['status'] = false;
-                $data['alert']['message'] = 'Kode sudah terdaftar! Silahkan gunakan kode lain';
-                echo json_encode($data);
-                exit;
-            }
-            $update = $this->action_m->update('location', $post, ['id' => $id]);
-            if ($update) {
-                $log['type'] = 'edt';
-                $log['description'] = 'Merubah data <b>"Lokasi"</b> dengan code <b>"'.$result->code.'"</b>';
-                $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
-
-                $data['status'] = true;
-                $data['alert']['message'] = 'Data lokasi berhasil di rubah!';
-                $data['datatable'] = 'table_location';
-                $data['modal']['id'] = '#kt_modal_location';
-                $data['modal']['action'] = 'hide';
-                $data['input']['all'] = true;
-            } else {
-                $data['status'] = false;
-            }
-        } else {
-            $data['status'] = false;
-        }
-        sleep(1.5);
-        echo json_encode($data);
-        exit;
-    }
-
-    
-    // FUNCTION USER
-    public function insert_arsip()
-    {
-        // VARIABEL
-        $arrVar['name']             = 'Nama arsip';
-        $arrVar['description']      = 'Keterangan';
-        $arrVar['id_location']      = 'Lokasi';
-        $arrVar['id_category']      = 'Kategori';
-        $arrVar['id_box_arsip']      = 'Box arsip';
-        // INFORMASI UMUM
-        foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var] ?? '';
-            if (!$$var) {
-                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
-                $arrAccess[] = false;
-            } else {
-                $post[$var] = trim($$var);
-                $arrAccess[] = true;
-            }
-        }
-        $post['code'] = 'AR'.date('YmdHis');
-        if (!in_array(false, $arrAccess)) {
-            $tujuan = './data/arsip/';
-
+            // Upload File (Opsional)
             if (!empty($_FILES['file']['tmp_name'])) {
-                if (!file_exists('./data/')) {
-                    mkdir('./data');
-                }
-                if (!file_exists('./data/arsip/')) {
-                    mkdir('./data/arsip');
-                }
-                $file = $_FILES['file'];
-               
-                $config['upload_path'] = $tujuan;
-                $config['allowed_types'] = 'pdf|PDF';
-                $config['file_name'] = uniqid();
+                if (!file_exists('./data/')) mkdir('./data');
+                if (!file_exists($tujuan)) mkdir($tujuan);
+
+                $config['upload_path']   = $tujuan;
+                $config['allowed_types'] = 'pdf|PDF|jpg|jpeg|png';
+                $config['file_name']     = uniqid();
                 $config['file_ext_tolower'] = true;
 
                 $this->load->library('upload', $config);
 
-                $data_upload = [];
-
                 if (!$this->upload->do_upload('file')) {
-
-                    $error = $this->upload->display_errors();
                     $data['status'] = false;
-                    $data['alert']['message'] = $error;
+                    $data['alert']['message'] = $this->upload->display_errors();
                     echo json_encode($data);
                     exit;
                 } else {
-                    $data_upload = array('upload_data' => $this->upload->data());
-                    $post['file'] = $data_upload['upload_data']['file_name'];
+                    $upload_data = $this->upload->data();
+                    $post['file'] = $upload_data['file_name'];
                 }
-            }else{
-                 $data['status'] = 500;
-                $data['alert']['message'] = 'File tidak boleh kosong!';
-                echo json_encode($data);
-                exit;
             }
 
             if ($this->id) {
                 $post['create_by'] = $this->id;
             }
             
-            $insert = $this->action_m->insert('arsip', $post);
+            $insert = $this->action_m->insert('surat_masuk', $post);
             if ($insert) {
+                // Log Activity
                 $log['type'] = 'add';
-                $log['description'] = 'Menambah data <b>"Arsip"</b> baru';
+                $log['description'] = 'Menambah data <b>"Surat Masuk"</b> baru: ' . $post['no_surat'];
                 $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
+                $this->action_m->insert('log', $log);
 
                 $data['status'] = true;
-                $data['alert']['message'] = 'Data arsip berhasil di tambahkan!';
-                $data['datatable'] = 'table_arsip';
-                $data['modal']['id'] = '#kt_modal_arsip';
+                $data['alert']['message'] = 'Data surat masuk berhasil ditambahkan!';
+                $data['datatable'] = 'table_surat_masuk';
+                $data['modal']['id'] = '#kt_modal_surat_masuk';
                 $data['modal']['action'] = 'hide';
                 $data['input']['all'] = true;
             } else {
@@ -651,18 +332,17 @@ class Function_ctl extends MY_Admin
         exit;
     }
 
-    public function update_arsip()
+    public function update_surat_masuk()
     {
         // VARIABEL
-        $arrVar['id']          = 'Id';
-        $arrVar['name']             = 'Nama arsip';
-        $arrVar['description']      = 'Keterangan';
-        $arrVar['id_location']      = 'Lokasi';
-        $arrVar['id_category']      = 'Kategori';
-        $arrVar['id_box_arsip']      = 'Box arsip';
-        // INFORMASI UMUM
+        $arrVar['id']           = 'Id';
+        $arrVar['no_surat']     = 'Nomor Surat';
+        $arrVar['tgl_diterima'] = 'Tanggal Diterima';
+        $arrVar['asal_surat']   = 'Asal Surat';
+        $arrVar['perihal']      = 'Perihal';
+
         foreach ($arrVar as $var => $value) {
-            $$var = $_POST[$var];
+            $$var = $_POST[$var] ?? '';
             if (!$$var) {
                 $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
                 $arrAccess[] = false;
@@ -671,82 +351,52 @@ class Function_ctl extends MY_Admin
                 $arrAccess[] = true;
             }
         }
-        $result = $this->action_m->get_single('arsip', ['id' => $id]);
-        $name_file = $_POST['name_file'] ?? '';
-        $tujuan = './data/arsip/';
+
+        $post['keterangan'] = $_POST['keterangan'] ?? '';
+        $result = $this->action_m->get_single('surat_masuk', ['id' => $id]);
+        $tujuan = './data/surat_masuk/';
 
         if (!in_array(false, $arrAccess)) {
-            if ($password) {
-                if ($password != $repassword) {
-                    $data['status'] = false;
-                    $data['alert']['message'] = 'Konfirmasi password tidak sesuai!';
-                    echo json_encode($data);
-                    exit;
-                } else {
-                    $post['password'] = hash_my_password($password);
-                }
-            } 
-
+            // Update File jika ada upload baru
             if (!empty($_FILES['file']['tmp_name'])) {
-                if (!file_exists('./data/')) {
-                    mkdir('./data');
-                }
-                if (!file_exists('./data/arsip/')) {
-                    mkdir('./data/arsip');
-                }
-                $file = $_FILES['file'];
-               
-                $config['upload_path'] = $tujuan;
-                $config['allowed_types'] = 'pdf|PDF';
-                $config['file_name'] = uniqid();
+                if (!file_exists($tujuan)) mkdir($tujuan);
+
+                $config['upload_path']   = $tujuan;
+                $config['allowed_types'] = 'pdf|PDF|jpg|jpeg|png';
+                $config['file_name']     = uniqid();
                 $config['file_ext_tolower'] = true;
 
                 $this->load->library('upload', $config);
-
-                $data_upload = [];
+                $this->upload->initialize($config);
 
                 if (!$this->upload->do_upload('file')) {
-
-                    $error = $this->upload->display_errors();
                     $data['status'] = false;
-                    $data['alert']['message'] = $error;
+                    $data['alert']['message'] = $this->upload->display_errors();
                     echo json_encode($data);
                     exit;
                 } else {
-                    $data_upload = array('upload_data' => $this->upload->data());
-                    $post['file'] = $data_upload['upload_data']['file_name'];
-                    if ($result->file && file_exists($tujuan.$result->file)) {
-                        unlink($tujuan.$result->file);
-                    }
+                    $upload_data = $this->upload->data();
+                    $post['file'] = $upload_data['file_name'];
                     
-                }
-            }else{
-                if (!$name_file) {
-                    $data['status'] = 500;
-                    $data['alert']['message'] = 'File tidak boleh kosong!';
-                    echo json_encode($data);
-                    exit;
-                }else{
-                    if ($result->file == '' || !file_exists($tujuan.$result->file)) {
-                        $data['status'] = 500;
-                        $data['alert']['message'] = 'File tidak boleh kosong!';
-                        echo json_encode($data);
-                        exit;
+                    // Hapus file lama jika ada
+                    if ($result->file && file_exists($tujuan . $result->file)) {
+                        unlink($tujuan . $result->file);
                     }
                 }
             }
 
-            $update = $this->action_m->update('arsip', $post, ['id' => $id]);
+            $update = $this->action_m->update('surat_masuk', $post, ['id' => $id]);
             if ($update) {
+                // Log Activity
                 $log['type'] = 'edt';
-                $log['description'] = 'Merubah data <b>"Arsip"</b> dengan code <b>"'.$result->code.'"</b>';
+                $log['description'] = 'Merubah data <b>"Surat Masuk"</b> No: ' . $result->no_surat;
                 $log['id_user'] = $this->id;
-                $this->action_m->insert('log',$log);
+                $this->action_m->insert('log', $log);
 
                 $data['status'] = true;
-                $data['alert']['message'] = 'Data arsip berhasil di rubah!';
-                $data['datatable'] = 'table_arsip';
-                $data['modal']['id'] = '#kt_modal_arsip';
+                $data['alert']['message'] = 'Data surat masuk berhasil dirubah!';
+                $data['datatable'] = 'table_surat_masuk';
+                $data['modal']['id'] = '#kt_modal_surat_masuk';
                 $data['modal']['action'] = 'hide';
                 $data['input']['all'] = true;
             } else {
@@ -760,6 +410,326 @@ class Function_ctl extends MY_Admin
         exit;
     }
 
+    // FUNCTION SURAT KELUAR
+    public function insert_surat_keluar()
+    {
+        // VARIABEL (Wajib diisi)
+        $arrVar['no_surat']  = 'Nomor Surat';
+        $arrVar['tgl_surat']  = 'Tanggal';
+        $arrVar['perihal']   = 'Perihal';
+        $arrVar['tujuan']    = 'Tujuan';
+        
+        // Keterangan bersifat opsional
+
+        foreach ($arrVar as $var => $value) {
+            $$var = $_POST[$var] ?? '';
+            if (!$$var) {
+                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
+                $arrAccess[] = false;
+            } else {
+                $post[$var] = trim($$var);
+                $arrAccess[] = true;
+            }
+        }
+
+        // Tambahkan keterangan (opsional)
+        $post['keterangan'] = $_POST['keterangan'] ?? '';
+
+        if (!in_array(false, $arrAccess)) {
+            $tujuan = './data/surat_keluar/';
+
+            // Upload File (Opsional)
+            if (!empty($_FILES['file']['tmp_name'])) {
+                if (!file_exists('./data/')) mkdir('./data');
+                if (!file_exists($tujuan)) mkdir($tujuan);
+
+                $config['upload_path']   = $tujuan;
+                $config['allowed_types'] = 'pdf|PDF|jpg|jpeg|png';
+                $config['file_name']     = uniqid();
+                $config['file_ext_tolower'] = true;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('file')) {
+                    $data['status'] = false;
+                    $data['alert']['message'] = $this->upload->display_errors();
+                    echo json_encode($data);
+                    exit;
+                } else {
+                    $upload_data = $this->upload->data();
+                    $post['file'] = $upload_data['file_name'];
+                }
+            }
+
+            if ($this->id) {
+                $post['create_by'] = $this->id;
+            }
+            
+            $insert = $this->action_m->insert('surat_keluar', $post);
+            if ($insert) {
+                // Log Activity
+                $log['type'] = 'add';
+                $log['description'] = 'Menambah data <b>"Surat Keluar"</b> baru: ' . $post['no_surat'];
+                $log['id_user'] = $this->id;
+                $this->action_m->insert('log', $log);
+
+                $data['status'] = true;
+                $data['alert']['message'] = 'Data surat keluar berhasil ditambahkan!';
+                $data['datatable'] = 'table_surat_keluar';
+                $data['modal']['id'] = '#kt_modal_surat_keluar';
+                $data['modal']['action'] = 'hide';
+                $data['input']['all'] = true;
+            } else {
+                $data['status'] = false;
+            }
+        } else {
+            $data['status'] = false;
+        }
+        sleep(1.5);
+        echo json_encode($data);
+        exit;
+    }
+
+    public function update_surat_keluar()
+    {
+        // VARIABEL
+        $arrVar['id']        = 'Id';
+        $arrVar['no_surat']  = 'Nomor Surat';
+        $arrVar['tgl_surat']  = 'Tanggal';
+        $arrVar['perihal']   = 'Perihal';
+        $arrVar['tujuan']    = 'Tujuan';
+
+        foreach ($arrVar as $var => $value) {
+            $$var = $_POST[$var] ?? '';
+            if (!$$var) {
+                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
+                $arrAccess[] = false;
+            } else {
+                $post[$var] = trim($$var);
+                $arrAccess[] = true;
+            }
+        }
+
+        $post['keterangan'] = $_POST['keterangan'] ?? '';
+        $result = $this->action_m->get_single('surat_keluar', ['id' => $id]);
+        $tujuan = './data/surat_keluar/';
+
+        if (!in_array(false, $arrAccess)) {
+            // Update File jika ada upload baru
+            if (!empty($_FILES['file']['tmp_name'])) {
+                if (!file_exists($tujuan)) mkdir($tujuan);
+
+                $config['upload_path']   = $tujuan;
+                $config['allowed_types'] = 'pdf|PDF|jpg|jpeg|png';
+                $config['file_name']     = uniqid();
+                $config['file_ext_tolower'] = true;
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                if (!$this->upload->do_upload('file')) {
+                    $data['status'] = false;
+                    $data['alert']['message'] = $this->upload->display_errors();
+                    echo json_encode($data);
+                    exit;
+                } else {
+                    $upload_data = $this->upload->data();
+                    $post['file'] = $upload_data['file_name'];
+                    
+                    // Hapus file lama jika ada
+                    if ($result->file && file_exists($tujuan . $result->file)) {
+                        unlink($tujuan . $result->file);
+                    }
+                }
+            }
+
+            $update = $this->action_m->update('surat_keluar', $post, ['id' => $id]);
+            if ($update) {
+                // Log Activity
+                $log['type'] = 'edt';
+                $log['description'] = 'Merubah data <b>"Surat Keluar"</b> No: ' . $result->no_surat;
+                $log['id_user'] = $this->id;
+                $this->action_m->insert('log', $log);
+
+                $data['status'] = true;
+                $data['alert']['message'] = 'Data surat keluar berhasil dirubah!';
+                $data['datatable'] = 'table_surat_keluar';
+                $data['modal']['id'] = '#kt_modal_surat_keluar';
+                $data['modal']['action'] = 'hide';
+                $data['input']['all'] = true;
+            } else {
+                $data['status'] = false;
+            }
+        } else {
+            $data['status'] = false;
+        }
+        sleep(1.5);
+        echo json_encode($data);
+        exit;
+    }
+
+    // FUNCTION LHP
+    public function insert_lhp()
+    {
+        // VARIABEL (Wajib diisi)
+        $arrVar['no_lhp']        = 'Nomor LHP';
+        $arrVar['tgl_lhp']       = 'Tanggal';
+        $arrVar['judul_lhp']     = 'Judul LHP';
+        $arrVar['nama_obrik']    = 'Nama Obrik';
+        $arrVar['tim_pemeriksa'] = 'Tim Pemeriksa';
+        
+        // Judul LHR, Keterangan & File bersifat opsional
+
+        foreach ($arrVar as $var => $value) {
+            $$var = $_POST[$var] ?? '';
+            if (!$$var) {
+                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
+                $arrAccess[] = false;
+            } else {
+                $post[$var] = trim($$var);
+                $arrAccess[] = true;
+            }
+        }
+
+        // Tambahkan data opsional
+        $post['judul_lhr']  = $_POST['judul_lhr'] ?? '';
+        $post['keterangan'] = $_POST['keterangan'] ?? '';
+
+        if (!in_array(false, $arrAccess)) {
+            $tujuan = './data/lhp/';
+
+            // Upload File (Opsional)
+            if (!empty($_FILES['file']['tmp_name'])) {
+                if (!file_exists('./data/')) mkdir('./data');
+                if (!file_exists($tujuan)) mkdir($tujuan);
+
+                $config['upload_path']      = $tujuan;
+                $config['allowed_types']    = 'pdf|PDF|jpg|jpeg|png|doc|docx';
+                $config['file_name']        = uniqid();
+                $config['file_ext_tolower'] = true;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('file')) {
+                    $data['status'] = false;
+                    $data['alert']['message'] = $this->upload->display_errors();
+                    echo json_encode($data);
+                    exit;
+                } else {
+                    $upload_data = $this->upload->data();
+                    $post['file'] = $upload_data['file_name'];
+                }
+            }
+
+            if ($this->id) {
+                $post['create_by'] = $this->id;
+            }
+            
+            $insert = $this->action_m->insert('lhp', $post);
+            if ($insert) {
+                // Log Activity
+                $log['type']        = 'add';
+                $log['description'] = 'Menambah data <b>"LHP"</b> baru: ' . $post['no_lhp'];
+                $log['id_user']     = $this->id;
+                $this->action_m->insert('log', $log);
+
+                $data['status']           = true;
+                $data['alert']['message'] = 'Data LHP berhasil ditambahkan!';
+                $data['datatable']        = 'table_lhp';
+                $data['modal']['id']      = '#kt_modal_lhp';
+                $data['modal']['action']  = 'hide';
+                $data['input']['all']     = true;
+            } else {
+                $data['status'] = false;
+            }
+        } else {
+            $data['status'] = false;
+        }
+        sleep(1.5);
+        echo json_encode($data);
+        exit;
+    }
+
+    public function update_lhp()
+    {
+        // VARIABEL
+        $arrVar['id']            = 'Id';
+        $arrVar['no_lhp']        = 'Nomor LHP';
+        $arrVar['tgl_lhp']       = 'Tanggal';
+        $arrVar['judul_lhp']     = 'Judul LHP';
+        $arrVar['nama_obrik']    = 'Nama Obrik';
+        $arrVar['tim_pemeriksa'] = 'Tim Pemeriksa';
+
+        foreach ($arrVar as $var => $value) {
+            $$var = $_POST[$var] ?? '';
+            if (!$$var) {
+                $data['required'][] = ['req_' . $var, $value . ' tidak boleh kosong !'];
+                $arrAccess[] = false;
+            } else {
+                $post[$var] = trim($$var);
+                $arrAccess[] = true;
+            }
+        }
+
+        $post['judul_lhr']  = $_POST['judul_lhr'] ?? '';
+        $post['keterangan'] = $_POST['keterangan'] ?? '';
+        
+        $result = $this->action_m->get_single('lhp', ['id' => $id]);
+        $tujuan = './data/lhp/';
+
+        if (!in_array(false, $arrAccess)) {
+            // Update File jika ada upload baru
+            if (!empty($_FILES['file']['tmp_name'])) {
+                if (!file_exists($tujuan)) mkdir($tujuan);
+
+                $config['upload_path']      = $tujuan;
+                $config['allowed_types']    = 'pdf|PDF|jpg|jpeg|png|doc|docx';
+                $config['file_name']        = uniqid();
+                $config['file_ext_tolower'] = true;
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                if (!$this->upload->do_upload('file')) {
+                    $data['status'] = false;
+                    $data['alert']['message'] = $this->upload->display_errors();
+                    echo json_encode($data);
+                    exit;
+                } else {
+                    $upload_data = $this->upload->data();
+                    $post['file'] = $upload_data['file_name'];
+                    
+                    // Hapus file lama jika ada
+                    if ($result->file && file_exists($tujuan . $result->file)) {
+                        unlink($tujuan . $result->file);
+                    }
+                }
+            }
+
+            $update = $this->action_m->update('lhp', $post, ['id' => $id]);
+            if ($update) {
+                // Log Activity
+                $log['type']        = 'edt';
+                $log['description'] = 'Merubah data <b>"LHP"</b> No: ' . $result->no_lhp;
+                $log['id_user']     = $this->id;
+                $this->action_m->insert('log', $log);
+
+                $data['status']           = true;
+                $data['alert']['message'] = 'Data LHP berhasil dirubah!';
+                $data['datatable']        = 'table_lhp';
+                $data['modal']['id']      = '#kt_modal_lhp';
+                $data['modal']['action']  = 'hide';
+                $data['input']['all']     = true;
+            } else {
+                $data['status'] = false;
+            }
+        } else {
+            $data['status'] = false;
+        }
+        sleep(1.5);
+        echo json_encode($data);
+        exit;
+    }
 }
 
 

@@ -49,10 +49,10 @@
             <!--begin::Card body-->
             <div class="card-body d-flex justify-content-center py-7 flex-column">
                   <!--begin::Amount-->
-                <span class="fw-bold text-primary me-2 lh-1 ls-n2" style="font-size : 25px;"><?= (isset($cnt_admin) && $cnt_admin) ? number_format($cnt_admin,0,',','.') : 0 ?></span>
+                <span class="fw-bold text-primary me-2 lh-1 ls-n2" style="font-size : 25px;"><?= (isset($cnt_surat_masuk) && $cnt_surat_masuk) ? number_format($cnt_surat_masuk,0,',','.') : 0 ?></span>
                 <!--end::Amount-->
                 <!--begin::Subtitle-->
-                <span class="text-dark opacity-50 pt-1 mt-3 fw-semibold fs-6">Jumlah Admin Aktif</span>
+                <span class="text-dark opacity-50 pt-1 mt-3 fw-semibold fs-6">Jumlah Surat Masuk</span>
                 <!--end::Subtitle-->
             </div>
             <!--end::Card body-->
@@ -68,10 +68,10 @@
             <!--begin::Card body-->
             <div class="card-body d-flex justify-content-center py-7 flex-column">
                   <!--begin::Amount-->
-                <span class="fw-bold text-primary me-2 lh-1 ls-n2" style="font-size : 25px;"><?= (isset($cnt_arsip) && $cnt_arsip) ? number_format($cnt_arsip,0,',','.') : 0 ?></span>
+                <span class="fw-bold text-primary me-2 lh-1 ls-n2" style="font-size : 25px;"><?= (isset($cnt_surat_keluar) && $cnt_surat_keluar) ? number_format($cnt_surat_keluar,0,',','.') : 0 ?></span>
                 <!--end::Amount-->
                 <!--begin::Subtitle-->
-                <span class="text-dark opacity-50 pt-1 mt-3 fw-semibold fs-6">Total Arsip</span>
+                <span class="text-dark opacity-50 pt-1 mt-3 fw-semibold fs-6">Jumlah Surat Keluar</span>
                 <!--end::Subtitle-->
             </div>
             <!--end::Card body-->

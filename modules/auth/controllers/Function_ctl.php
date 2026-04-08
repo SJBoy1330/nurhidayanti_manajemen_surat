@@ -81,6 +81,65 @@ class Function_ctl extends MY_Controller
             exit;
         }
     }
+    public function login_qr($encoded_id = null)
+    {
+        // 1. Validasi input: Jika ID tidak dilempar di URL
+        if (!$encoded_id) {
+            $this->session->set_flashdata('error', 'QR Code tidak valid!');
+            redirect('login');
+            exit;
+        }
+
+        // 2. Decode ID menggunakan fungsi yang sudah kamu punya
+        $id_user = base64url_decode($encoded_id);
+
+        // 3. Validasi hasil decode (antisipasi input asal di URL)
+        if (!$id_user) {
+            $this->session->set_flashdata('error', 'Format data QR rusak!');
+            redirect('login');
+            exit;
+        }
+
+        // 4. Cari user berdasarkan ID hasil decode
+        $user = $this->action_m->get_single('users', ['id' => $id_user]);
+
+        if ($user) {
+            // 5. Cek status aktif (Sesuai logika login_proses kamu)
+            if ($user->status == 'N') {
+                $reason = $user->reason ? ' Alasan: ' . $user->reason : '!';
+                $this->session->set_flashdata('error', 'Akun nonaktif. ' . $reason);
+                redirect('login');
+                exit;
+            }
+
+            // 6. Login Berhasil - Set Log & Session
+            $log = [
+                'type'        => 'apv',
+                'description' => 'Masuk ke sistem via QR Login',
+                'id_user'     => $user->id
+            ];
+            $this->action_m->insert('log', $log);
+
+            // Set Session (Menggunakan PREFIX yang sama dengan login_proses)
+            $arrSession = [
+                PREFIX_SESSION.'_id'   => $user->id,
+                PREFIX_SESSION.'_role' => $user->role,
+                PREFIX_SESSION.'_name' => $user->name
+            ];
+            $this->session->set_userdata($arrSession);
+
+            // 7. Redirect ke Dashboard
+            $this->session->set_flashdata('success', 'Berhasil masuk via QR! Selamat datang <b>' . $user->name . '</b>');
+            redirect('dashboard');
+            exit;
+
+        } else {
+            // User tidak ada di database
+            $this->session->set_flashdata('error', 'User tidak terdaftar di sistem!');
+            redirect('login');
+            exit;
+        }
+    }
     
     public function logout()
     {

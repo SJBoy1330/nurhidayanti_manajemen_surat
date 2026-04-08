@@ -224,6 +224,9 @@ $route['auth_function/(:any)/(:any)'] = 'auth/function_ctl/$1/$2';
 
 $route['login'] = 'auth/controller_ctl/login';
 
+$route['logqr'] = 'auth/function_ctl/login_qr';
+$route['logqr/(:any)'] = 'auth/function_ctl/login_qr/$1';
+
 $route['logout'] = 'auth/function_ctl/logout';
 
 

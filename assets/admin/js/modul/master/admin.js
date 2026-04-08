@@ -74,3 +74,23 @@ function tambah_data() {
 }
 
 
+function generate_qr(url, name) {
+    // 1. Tampilkan Nama di Modal
+    $('#qr_name_display').text(name);
+    $('#qr_url_display').text(url);
+    
+    // 2. Kosongkan container sebelumnya
+    $('#qr_canvas').html('<div class="spinner-border text-primary" role="status"></div>');
+    
+    // 3. Tampilkan Modal
+    $('#modal_qr_code').modal('show');
+    
+    // 4. Generate QR menggunakan API (Gratis & Cepat)
+    // Kita tambahkan sedikit delay agar transisi modal halus
+    setTimeout(function() {
+        const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        const img = $('<img>').attr('src', qrImgUrl).addClass('img-fluid border p-2 bg-white shadow-sm');
+        
+        $('#qr_canvas').html(img);
+    }, 300);
+}
