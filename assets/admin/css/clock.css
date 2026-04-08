@@ -1,0 +1,114 @@
+/* Google fonts import link */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+
+
+.my-clock section .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+    max-width: 560px;
+    width: 100%;
+    position: relative;
+}
+
+.my-clock section.dark .container {
+    background: #323840;
+}
+
+.my-clock section .container .icons span{
+    position: absolute;
+    right: 17px;
+    top: 17px;
+    height: 30px;
+    width: 30px;
+    background: #24292D;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.my-clock section.dark .container .icons i {
+    background: #fff;
+    color: #323840;
+}
+
+.my-clock .container .icons i.fa-sun {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.my-clock section.dark .container .icons i.fa-sun {
+    opacity: 1;
+    pointer-events: auto;
+    font-size: 16px;
+}
+
+.my-clock section .container .time {
+    display: flex;
+    align-items: center;
+}
+
+.my-clock .container .time .time-colon {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.my-clock .time .time-colon .am_pm {
+    position: absolute;
+    top: 0;
+    right: -50px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.my-clock section.dark .time .time-colon .am_pm {
+    color: #fff;
+}
+
+.my-clock .time .time-colon .time-text {
+    height: 100px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background: #F0F8FF;
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.my-clock section.dark .time .time-colon .time-text {
+    background: #24292D;
+}
+
+.my-clock .time .time-colon .time-text,
+.my-clock .time .time-colon .colon {
+    font-size: 35px;
+    font-weight: 600;
+}
+
+.my-clock section.dark .time .time-text .num,
+.my-clock section.dark .time .colon {
+    color: #fff;
+}
+
+.my-clock .time .time-colon .colon {
+    font-size: 40px;
+    margin: 0 10px;
+}
+
+.my-clock .time .time-colon .time-text .text {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.my-clock section.dark .time .time-colon .text {
+    color: #fff;
+}
